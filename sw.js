@@ -1,7 +1,7 @@
 /* تۆماری نمرە — Service Worker
    هەموو فایلەکان لە یەکەم کردنەوەدا هەڵدەگیرێن، دواتر ئەپەکە بێ ئینتەرنێت کار دەکات.
    کاتێک وەشانی ئەپ دەگۆڕیت، تەنها VERSION بگۆڕە.                                     */
-const VERSION = 'marks-v2.3.0';
+const VERSION = 'marks-v2.4.0';
 const CORE = [
   './', 'index.html', 'config.js', 'manifest.json',
   'marks.png', 'marks-192.png', 'marks-maskable.png', 'apple-touch-icon.png',
