@@ -1,11 +1,11 @@
 /* تۆماری نمرە — Service Worker
    هەموو فایلەکان لە یەکەم کردنەوەدا هەڵدەگیرێن، دواتر ئەپەکە بێ ئینتەرنێت کار دەکات.
    کاتێک وەشانی ئەپ دەگۆڕیت، تەنها VERSION بگۆڕە.                                     */
-const VERSION = 'marks-v2.4.0';
+const VERSION = 'marks-v2.5.0';
 const CORE = [
   './', 'index.html', 'config.js', 'manifest.json',
   'marks.png', 'marks-192.png', 'marks-maskable.png', 'apple-touch-icon.png',
-  'fonts/Vazirmatn.woff2',
+  'fonts/Vazirmatn.woff2', 'logo.webp', 'logo-zhiwa.webp',
   'libs/xlsx.full.min.js', 'libs/html2canvas.min.js', 'libs/jspdf.umd.min.js'
 ];
 
@@ -32,16 +32,16 @@ function fetchTimeout(req, ms) {
   });
 }
 
-/* لاپەڕەکان: یەکەم ئینتەرنێت (بۆ وەشانی نوێ)، ئەگەر نەبوو کاش */
-async function pageHandler(req) {
+/* لاپەڕەکان: یەکسەر لە کاش (ئەپ بێ چاوەڕێکردن دەکرێتەوە، تەنانەت لەسەر ئینتەرنێتی لاواز)، لە پشتەوە نوێ دەکرێتەوە.
+   وەشانی نوێ لە ڕێگەی پێشکەوتنی VERSION ەوە دێت (install) و لە کردنەوەی دواتر کار دەکات. */
+async function pageHandler(req, e) {
   const url = new URL(req.url), key = url.origin + url.pathname, cache = await caches.open(VERSION);
-  try {
-    const res = await fetchTimeout(req, 4000);
-    if (res && res.ok) cache.put(key, res.clone());
-    return res;
-  } catch (err) {
-    return (await cache.match(key)) ||
-      (await cache.match(new URL('index.html', self.registration.scope).href)) ||
+  const cached = await cache.match(key);
+  const net = fetchTimeout(req, cached ? 15000 : 6000).then(res => { if (res && res.ok) cache.put(key, res.clone()); return res; });
+  if (cached) { net.catch(() => { }); if (e && e.waitUntil) e.waitUntil(net.catch(() => { })); return cached; }
+  try { return await net; }
+  catch (err) {
+    return (await cache.match(new URL('index.html', self.registration.scope).href)) ||
       new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' } });
   }
 }
@@ -69,5 +69,5 @@ self.addEventListener('fetch', e => {
   const url = new URL(req.url);
   if (url.origin !== location.origin) return;          // تێلیگرام و هتد: دەستکاری ناکرێن
   if (url.pathname.startsWith(new URL(self.registration.scope).pathname + 's/')) return;   // لاپەڕەی قوتابی (s/) هیچ پەیوەندییەکی بە ئەپی مامۆستاوە نییە
-  e.respondWith(req.mode === 'navigate' ? pageHandler(req) : assetHandler(req));
+  e.respondWith(req.mode === 'navigate' ? pageHandler(req, e) : assetHandler(req));
 });
