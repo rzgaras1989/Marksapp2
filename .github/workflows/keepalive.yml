@@ -1,0 +1,18 @@
+# هەموو ڕۆژێک پەیوەندی بە هەردوو پڕۆژەی Supabase دەکات تا نەوەستن (بێبەرامبەر دوای ~٧ ڕۆژ بێ چالاکی دەوەستن)
+name: Keep Supabase awake
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping project 1 (marks)
+        run: |
+          curl -fsS -X POST "https://mmawkcxdaprlbnebajte.supabase.co/rest/v1/rpc/marks_ping" \
+            -H "apikey: sb_publishable_aj8bvotHB80CTDcAqJsuZw_RlRyDM3Y" -H "Content-Type: application/json" -d '{}'
+      - name: Ping project 2
+        run: |
+          curl -fsS -X POST "https://ciooldolbkqfluyeaegr.supabase.co/rest/v1/rpc/marks_ping" \
+            -H "apikey: sb_publishable_oj8gL4aazyoCRoSMtHvNwA_ZnedV37Z" -H "Content-Type: application/json" -d '{}'

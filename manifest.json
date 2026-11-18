@@ -1,0 +1,25 @@
+{
+  "id": "./index.html",
+  "name": "تۆماری نمرە",
+  "short_name": "تۆماری نمرە",
+  "description": "تۆماری نمرەی قوتابخانە و پەیمانگا — ئۆفلاین و بێ سێرڤەر",
+  "lang": "ckb",
+  "dir": "rtl",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#eef2f8",
+  "theme_color": "#1e3a8a",
+  "categories": ["education", "productivity"],
+  "icons": [
+    { "src": "marks-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "marks.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "marks-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "قوتابخانە", "short_name": "قوتابخانە", "url": "./index.html?go=school", "icons": [{ "src": "marks-192.png", "sizes": "192x192" }] },
+    { "name": "پەیمانگا", "short_name": "پەیمانگا", "url": "./index.html?go=institute", "icons": [{ "src": "marks-192.png", "sizes": "192x192" }] },
+    { "name": "ئامار", "short_name": "ئامار", "url": "./index.html?go=stats", "icons": [{ "src": "marks-192.png", "sizes": "192x192" }] }
+  ]
+}
